@@ -81,7 +81,7 @@ function createBoard() {
 function getScore() {
     fetch("http://localhost:8080/getScore")
     .then(res => res.text())
-    .then(data =>{
+    .then(data => {
         blue_score = parseInt(data[1])
         orange_score = parseInt(data[3]);
         score_blue.innerHTML = blue_score
@@ -91,16 +91,6 @@ function getScore() {
 
 // Click board function
 function clickBox() {
-
-    /*
-    const data ={name : 'Naib'}
-    fetch("http://localhost:8080/demo")
-    .then(res => res.text())
-    .then(data =>{
-        console.log(data);
-    });
-    */
-
     if (gameover) { return; }
     let squares = document.querySelectorAll(".board div");
     let click = parseInt(this.dataset.id);
@@ -175,8 +165,7 @@ function checkWon() {
                 fetch("http://localhost:8080/updateblue")
                     .then(res => res.text())
                     .then(data =>{
-                        console.log(data);
-                        blue_score = parseInt(data);
+                        blue_score = parseInt(data[1])
                         score_blue.innerHTML = blue_score
                     });
 
@@ -199,9 +188,8 @@ function checkWon() {
                 fetch("http://localhost:8080/updateorange")
                     .then(res => res.text())
                     .then(data =>{
-                        console.log(data);
-                        orange_score = parseInt(data);
-                        score_orange.innerHTML = orange_score
+                        orange_score = parseInt(data[3]);
+                        score_orange.innerHTML = orange_score 
                     });
 
                 if (response) {
