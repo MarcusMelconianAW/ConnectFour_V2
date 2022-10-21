@@ -1,6 +1,15 @@
+/* INITIATE SERVER */
 const express = require('express')
 const cors = require('cors');
 
+const app = express();
+
+app.use(express.json());
+app.use(cors());
+
+const port = 8080
+
+/* INITIATE FIREBASE DATABASE CONNECTION */
 const firebase = require('firebase');
 
 const firebaseConfig = {
@@ -16,16 +25,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const app = express();
-
-app.use(express.json());
-app.use(cors());
-
-const port = 8080
-
 var blue_score;
 var orange_score;
 
+/* DATABASE FUNCTIONS */
 const updateScoreBoardData = async (blue_score, orange_score, res) => {
     firebase
         .database()
@@ -52,6 +55,34 @@ const getScoreBoardData = async (res) => {
         });
 }
 
+/* JEST TEST SCOREBOARD FUNCTIONS */
+const testScoreBoardData = async (blue_score, orange_score) => {
+    firebase
+        .database()
+        .ref("scoreboard")
+        .set({
+            blue_score: blue_score,
+            orange_score: orange_score
+        })
+        .then(() => {
+            return('Database API call complete');
+        })
+}
+
+const validateScoreBoardData = async () => {
+    firebase
+        .database()
+        .ref("scoreboard")
+        .once("value")
+        .then((snapshot) => {
+            const data = snapshot.val();
+            blue_score = data.blue_score;
+            orange_score = data.orange_score;
+            return [blue_score, orange_score];
+        });
+}
+
+/* HANDLE API CALLS FUNCTIONS */
 app.get('/updateblue', (req, res) => {
     blue_score += 1;
     updateScoreBoardData(blue_score, orange_score, res);
@@ -73,5 +104,10 @@ app.get('/resetscore', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  //console.log(`Example app listening on port ${port}`)
 })
+
+module.exports = {
+    testScoreBoardData,
+    validateScoreBoardData
+}

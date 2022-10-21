@@ -1,4 +1,4 @@
-// Game variables
+/* GAME VARIABLES */
 let board = document.querySelector(".board")
 let player = document.querySelector(".player")
 let score_blue = document.querySelector(".score_blue")
@@ -40,7 +40,7 @@ let currentPlayer = 'blue';
 document.addEventListener("DOMContentLoaded", loadDOM)
 
 
-// Load DOM function
+/* LOAD DOM FUNCTION */
 function loadDOM() {
 
     createBoard()
@@ -59,7 +59,7 @@ function loadDOM() {
 
 }
 
-// Create board function
+/* CREATE BOARD FUNCTION */
 function createBoard() {
     for (let i = 0; i < 49; i++) {
 
@@ -78,6 +78,7 @@ function createBoard() {
     }
 }
 
+/* GET SCORE API CALL */
 function getScore() {
     fetch("http://localhost:8080/getScore")
     .then(res => res.text())
@@ -89,7 +90,7 @@ function getScore() {
     });
 }
 
-// Click board function
+/* CLICK BOARD FUNCTION */
 function clickBox() {
     if (gameover) { return; }
     let squares = document.querySelectorAll(".board div");
@@ -117,6 +118,7 @@ function clickBox() {
     }
 }
 
+/* PLACE CLICK FUNCTION */
 function placeClick(arr, val1, val2) {
     let squares = arr;
     if (currentPlayer === 'blue') {
@@ -151,7 +153,7 @@ function placeClick(arr, val1, val2) {
     }
 }
 
-// Check winner function
+/* CHECK WINNER FUNCTION */
 function checkWon() {
     let squares = document.querySelectorAll(".board div")
 
@@ -208,7 +210,7 @@ function checkWon() {
     }
 }
 
-// Reset game function
+/* RESET GAME FUNCTION */
 function reset() {
 
     board.innerHTML = "";
@@ -223,6 +225,7 @@ function reset() {
     
 }
 
+/* RESET SCORE API CALL */
 function resetScoreFunc() {
 
     fetch("http://localhost:8080/resetscore")
@@ -243,5 +246,9 @@ function resetScoreFunc() {
     divs.forEach((div) => {
         div.style.setProperty('--td-background-color', 'rgb(183, 255, 251)');
     });
-    
+
+}
+
+module.exports = {
+    resetScoreFunc
 }
